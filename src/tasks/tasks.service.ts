@@ -14,7 +14,7 @@ export class TasksService {
         creationDate: new Date(),
     }]
 
-    getAllTasks() {
+    getAllTasks(): Task[] {
         return this.tasks;
     }
 
@@ -22,10 +22,10 @@ export class TasksService {
         return this.tasks.find(task => task.id === id);
     }
 
-    getTaskByStatus(status: string) {
+    getTaskByStatus(status: string): Task[] {
         return this.tasks.filter(task => task.status === status);
     }
-    getDaysPassedTask(id: string) {
+    getDaysPassedTask(id: string): number {
         const task = this.tasks.find(task => task.id === id);
     
         const creationDate = new Date(task.creationDate);
@@ -42,7 +42,7 @@ export class TasksService {
     }
     
 
-    createTasks(title: string, description: string) {
+    createTasks(title: string, description: string): Task {
         const task = {
             id: v4(),
             title,

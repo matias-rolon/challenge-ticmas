@@ -1,7 +1,7 @@
 export enum TaskStatus {
     PENDING = 'PENDING',
     IN_PROGRESS = 'IN_PROGRESS',
-    DONDE = 'DONE',
+    DONE = 'DONE',
 }
 
 export class Task {
