@@ -1,69 +1,71 @@
 import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from "./task.entity";
-import { v4 } from "uuid";
 import { UpdateTaskDto } from './dto/task.dto';
+import { TaskBD } from "../schemas/task.schema";
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TasksService {
 
-    private tasks: Task[] = [{
-        id: '1',
-        title: 'frist task', 
-        description: 'This is a description',
-        status: TaskStatus.PENDING,
-        creationDate: new Date(),
-    }]
+    constructor(@InjectRepository(TaskBD) private taskRepository: Repository<Task>){}
 
-    getAllTasks(): Task[] {
-        return this.tasks;
+    getAllTasks() {
+        return this.taskRepository.find();
+        
     }
 
-    getTaskById(id: string): Task {
-        return this.tasks.find(task => task.id === id);
+    getTaskById(id: string): Promise<Task> {
+        return this.taskRepository.findOne({
+            where: {
+                id
+            }
+         })
     }
 
-    getTaskByStatus(status: string): Task[] {
-        return this.tasks.filter(task => task.status === status);
+    async getTaskByStatus(status: string): Promise<Task[]> {
+        const taskStatus: TaskStatus = TaskStatus[status.toUpperCase() as keyof typeof TaskStatus];
+
+        if (!taskStatus) {
+            throw new Error('Estado de tarea no válido');
+        }
+        
+        const tasks = await this.taskRepository.find({ where: { status: taskStatus } });
+        return tasks;
     }
-    getDaysPassedTask(id: string): number {
-        const task = this.tasks.find(task => task.id === id);
+
+    async getDaysPassedTask(id: string): Promise<number> {
+        const task = await this.taskRepository.findOne({ where: { id } });
     
-        const creationDate = new Date(task.creationDate);
+        if (!task) {
+            throw new Error('No se encontró la tarea con el ID proporcionado');
+        }
+        
         const currentDate = new Date();
-        
-        const creationDateMs = creationDate.getTime();
-        const currentDateMs = currentDate.getTime();
-        
-        const differenceMs = currentDateMs - creationDateMs;
-        
+        const differenceMs = currentDate.getTime() - task.creationDate.getTime();
         const daysPassed = Math.floor(differenceMs / (1000 * 60 * 60 * 24));
-        
+    
         return daysPassed;
     }
     
 
-    createTasks(title: string, description: string): Task {
+    async createTasks(title: string, description: string):Promise<Task> {
         const task = {
-            id: v4(),
             title,
             description,
             status: TaskStatus.PENDING,
             creationDate: new Date
         }
-        this.tasks.push(task);
-
-        return task;
+        const newTask= this.taskRepository.create(task);
+        return this.taskRepository.save(newTask)
     }
 
     deleteTasks(id: string) {
-        this.tasks = this.tasks.filter(task => task.id !== id);
+        return this.taskRepository.delete({id})
     }
 
-    updateTasks(id: string, updateFields: UpdateTaskDto): Task {
-        const task = this.getTaskById(id)
-        const newTask = Object.assign(task, updateFields);
-        this.tasks = this.tasks.map(task => task.id === id ? newTask : task)
-        return newTask;
+    updateTasks(id: string, updateFields: UpdateTaskDto) {
+        return this.taskRepository.update({id}, updateFields);
     }
 
 }
