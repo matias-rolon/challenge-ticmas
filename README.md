@@ -1,73 +1,63 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Challenge Ticmas
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is an application developed with NestJS, using TypeORM as the Object-Relational Mapping (ORM) to interact with a MySQL database.
 
 ## Installation
 
-```bash
-$ npm install
-```
-
-## Running the app
+To install the project dependencies, run the following command:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Test
+## Configuration
+
+The `.env` file contains the environment variables necessary for the application configuration. Make sure to set the following variables according to your preferences:
+
+- `PORT`: Port on which the server will run.
+- `HOST`: Host of the MySQL database.
+- `MYSQL_DB_NAME_DEV`: Name of the MySQL database in the development environment.
+- `MYSQL_DB_NAME_TEST`: Name of the MySQL database in the test environment.
+
+## Usage
+
+To run the application in development mode, you can use the following command:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run start:dev
 ```
 
-## Support
+This will start the server in development mode and automatically reload on code changes.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Tests
 
-## Stay in touch
+To run tests and watch for changes, you can use the following command:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+npm run test:watch
+```
+
+This command runs the tests and continuously watches for changes in the code.
+
+## Endpoints
+
+The application exposes the following endpoints:
+
+- `GET /tasks`: Get all tasks.
+- `GET /tasks/:id`: Get a task by its ID.
+- `GET /tasks/status/:status`: Get all tasks with a specific status.
+- `GET /tasks/:id/days-passed`: Get the days passed since the creation of a task.
+- `POST /tasks`: Create a new task.
+- `DELETE /tasks/:id`: Delete a task.
+- `PATCH /tasks/:id`: Update a task.
+
+You can find more details about the endpoints in the corresponding controllers and services in the source code.
+
+
+## Contribution
+
+If you want to contribute to this project, you are more than welcome! You can fork the repository, make your changes, and send a pull request.
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is under the UNLICENSED license.

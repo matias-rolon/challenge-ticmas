@@ -12,7 +12,6 @@
 
         getAllTasks() {
             return this.taskRepository.find();
-            
         }
 
         getTaskById(id: string): Promise<Task> {
