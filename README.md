@@ -14,10 +14,13 @@ npm install
 
 The `.env` file contains the environment variables necessary for the application configuration. Make sure to set the following variables according to your preferences:
 
-- `PORT`: Port on which the server will run.
-- `HOST`: Host of the MySQL database.
-- `MYSQL_DB_NAME_DEV`: Name of the MySQL database in the development environment.
-- `MYSQL_DB_NAME_TEST`: Name of the MySQL database in the test environment.
+- `PORT`
+- `HOST`
+- `DB_HOST`
+- `DB_PORT`
+- `DB_PASSWORD`
+- `DB_USERNAMES`
+- `DB_DATABASE`
 
 ## Usage
 
@@ -34,7 +37,7 @@ This will start the server in development mode and automatically reload on code 
 To run tests and watch for changes, you can use the following command:
 
 ```bash
-npm run test:watch
+npm run test
 ```
 
 This command runs the tests and continuously watches for changes in the code.
