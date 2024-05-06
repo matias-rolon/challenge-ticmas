@@ -8,13 +8,13 @@ import { TaskBD } from "./schemas/task.schema";
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'matuka184',
-      database: 'db_ticmas',
+      port: 3310,
+      username: 'mati',
+      password: 'password',
+      database: 'db',
       entities: [TaskBD],
       synchronize: true
-    }),
+    }), 
     TasksModule],
   controllers: [],
   providers: [],

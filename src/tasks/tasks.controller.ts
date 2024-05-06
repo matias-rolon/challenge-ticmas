@@ -1,47 +1,82 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
 import { TasksService } from './tasks.service'
 import { CreateTaskDto, UpdateTaskDto } from './dto/task.dto';
-import { Task } from './task.entity';
+import { Task, TaskStatus } from './task.entity';
 
 @Controller('tasks')
 export class TasksController {
 
-    constructor(private tasksService: TasksService) {}
+    constructor(private tasksService: TasksService) { }
 
     @Get()
-    getAllTasks(): Promise<Task[]> {
-        return this.tasksService.getAllTasks()
+    async getAllTasks(){
+        return await this.tasksService.getAllTasks()
     }
 
     @Get(":id")
-    getByID(@Param('id') id: string) {
-        return this.tasksService.getTaskById(id);
-    } 
+    async getByID(@Param('id') id: string) {
+        try {
+            return await this.tasksService.getTaskById(id);
+        } catch (error) {
+            if (error instanceof Error) {
+                return new HttpException(error.message, HttpStatus.NOT_FOUND);
+            }
+            return new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @Get("status/:status")
-    getByStatus(@Param('status') status: string) {
-        return this.tasksService.getTaskByStatus(status)
+    async getByStatus(@Param('status') status: TaskStatus) {
+        try {
+            return await this.tasksService.getTaskByStatus(status)
+        } catch (error) {
+            if (error instanceof Error) {
+                return new HttpException(error.message, HttpStatus.NOT_FOUND);
+            }
+            return new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Get(":id/days-passed")
-    getDaysPassed(@Param("id") id: string) {
-        return this.tasksService.getDaysPassedTask(id);
+    async getDaysPassed(@Param("id") id: string) {
+        try {
+            return await this.tasksService.getDaysPassedTask(id);
+        } catch (error) {
+            if (error instanceof Error) {
+                return new HttpException(error.message, HttpStatus.NOT_FOUND);
+            }
+            return new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
     @Post()
-    createTask(@Body() newTask: CreateTaskDto): Promise<Task> {
-        return this.tasksService.createTasks(newTask.title, newTask.description)
+    async createTask(@Body() newTask: CreateTaskDto): Promise<Task> {
+        return await this.tasksService.createTasks(newTask.title, newTask.description)
     }
 
     @Delete(':id')
-    deleteTask(@Param('id') id: string) {
-        this.tasksService.deleteTasks(id);
+    async deleteTask(@Param('id') id: string) {
+        try {
+            await this.tasksService.deleteTasks(id);
+        } catch (error) {
+            if (error instanceof Error) {
+                return new HttpException(error.message, HttpStatus.NOT_FOUND);
+            }
+            return new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Patch(":id")
-    updateTask(@Param('id') id: string, @Body() updatedFields: UpdateTaskDto) {
-        return this.tasksService.updateTasks(id, updatedFields);
+    async updateTask(@Param('id') id: string, @Body() updatedFields: UpdateTaskDto) {
+        try {
+            return await this.tasksService.updateTasks(id, updatedFields);
+        } catch (error) {
+            if (error instanceof Error) {
+                return new HttpException(error.message, HttpStatus.NOT_FOUND);
+            }
+            return new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
