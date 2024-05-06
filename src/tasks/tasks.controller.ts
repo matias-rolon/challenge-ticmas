@@ -56,14 +56,14 @@ export class TasksController {
     }
 
     @Delete(':id')
-    async deleteTask(@Param('id') id: string) {
+    async deleteTask(@Param('id') id: string): Promise<void> {
         try {
             await this.tasksService.deleteTasks(id);
         } catch (error) {
             if (error instanceof Error) {
-                return new HttpException(error.message, HttpStatus.NOT_FOUND);
+                throw new HttpException(error.message, HttpStatus.NOT_FOUND);
             }
-            return new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

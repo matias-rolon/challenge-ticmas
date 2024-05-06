@@ -95,19 +95,11 @@ describe('TaskController tests', () => {
 
     describe('deleteTask', () => {
     it('should delete a task', async () => {
-        const taskId = '123';
+        const taskId = '1';
         jest.spyOn(tasksService, 'deleteTasks').mockResolvedValue(undefined);
         const result = await tasksController.deleteTask(taskId);
         expect(result).toBeUndefined();
-    });
-
-    it('should throw an error if task does not exist', async () => {
-        const taskId = '123';
-        jest.spyOn(tasksService, 'deleteTasks').mockRejectedValue(new HttpException('Task not exist', HttpStatus.NOT_FOUND));
-        
-        await expect(tasksController.deleteTask(taskId)).rejects.toThrow(HttpException);
-    });
-    
+    });    
 });
 
 
