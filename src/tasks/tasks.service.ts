@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from "./task.entity";
 import { UpdateTaskDto } from './dto/task.dto';
 import { ItaskRepository } from './task.repository';
@@ -23,7 +23,7 @@ export class TasksService {
     public async getTaskById(id: string): Promise<Task> {
         const task = await this.taskRepository.getTaskById(id)
         if (!task) {
-            throw new Error("Task not exist");
+            throw new HttpException('Task not exist', HttpStatus.NOT_FOUND);
         }
         return task
     }

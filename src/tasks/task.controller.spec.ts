@@ -1,31 +1,24 @@
 import { Test } from "@nestjs/testing";
 import { TasksController } from "./tasks.controller"
 import { TasksService } from "./tasks.service";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { TaskBD } from "../schemas/task.schema";
 import { Task, TaskStatus } from "./task.entity";
 import { CreateTaskDto, UpdateTaskDto } from "./dto/task.dto";
-import { UpdateResult } from "typeorm";
+import { ItaskRepository } from "./task.repository";
+import { HttpException, HttpStatus } from "@nestjs/common";
 
-describe('TaskControler tets', () => {
+describe('TaskController tests', () => {
     let tasksController: TasksController;
     let tasksService: TasksService;
+  let repositoryMock: Partial<ItaskRepository>;
 
-    const USER_REPOSITORY_TOKEN = getRepositoryToken(TaskBD)
 
     beforeEach(async () => {
         const moduleRef = await Test.createTestingModule({
-            providers: [TasksService, TasksController,
-                {
-                    provide: USER_REPOSITORY_TOKEN,
-                    useValue: {
-                        create: jest.fn(),
-                        save: jest.fn(),
-                        findOne: jest.fn(),
-                        find: jest.fn(),
-                    },
-                },
-            ],
+            controllers: [TasksController],
+            providers: [
+                TasksService,
+                { provide: 'repository', useValue: repositoryMock },
+              ],
         }).compile();
 
         tasksService = moduleRef.get<TasksService>(TasksService);
@@ -63,7 +56,7 @@ describe('TaskControler tets', () => {
 
     describe('getByStatus', () => {
         it('should return tasks by status', async () => {
-            const status = 'completed';
+            const status = TaskStatus.DONE;
             const result: Task[] = [/* mock tasks array */];
             jest.spyOn(tasksService, 'getTaskByStatus').mockResolvedValue(result);
 
@@ -101,29 +94,38 @@ describe('TaskControler tets', () => {
     });
 
     describe('deleteTask', () => {
-        it('should delete a task', () => {
-            const taskId = '123';
-            jest.spyOn(tasksService, 'deleteTasks').mockImplementation();
-
-            expect(tasksController.deleteTask(taskId)).toBeUndefined();
-        });
+    it('should delete a task', async () => {
+        const taskId = '123';
+        jest.spyOn(tasksService, 'deleteTasks').mockResolvedValue(undefined);
+        const result = await tasksController.deleteTask(taskId);
+        expect(result).toBeUndefined();
     });
+
+    it('should throw an error if task does not exist', async () => {
+        const taskId = '123';
+        jest.spyOn(tasksService, 'deleteTasks').mockRejectedValue(new HttpException('Task not exist', HttpStatus.NOT_FOUND));
+        
+        await expect(tasksController.deleteTask(taskId)).rejects.toThrow(HttpException);
+    });
+    
+});
+
 
     describe('updateTask', () => {
         it('should update a task', async () => {
-          const taskId = '123';
-          const updatedFields: UpdateTaskDto = {};
-          const updateResult: Task = {
-              id: "",
-              title: "",
-              description: "",
-              status: TaskStatus.PENDING,
-              creationDate: undefined
-          };
-      
-          jest.spyOn(tasksService, 'updateTasks').mockResolvedValue(new PromiseupdateResult);
-      
-          expect(await tasksController.updateTask(taskId, updatedFields)).toBe(updateResult);
+            const taskId = '123';
+            const updatedFields: UpdateTaskDto = {};
+            const updateResult: Task = {
+                id: "1",
+                title: "First title",
+                description: "First description",
+                status: TaskStatus.PENDING,
+                creationDate: undefined
+            };
+
+            jest.spyOn(tasksService, 'updateTasks').mockResolvedValue(updateResult);
+
+            expect(await tasksController.updateTask(taskId, updatedFields)).toBe(updateResult);
         });
-      });
+    });
 })
