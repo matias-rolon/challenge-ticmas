@@ -15,7 +15,6 @@ services:
     container_name: db-ticmas
     expose:
       - 3310
-    network_mode: host
 volumes:
   mysql-data:  
 

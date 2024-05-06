@@ -113,12 +113,15 @@ describe('TaskControler tets', () => {
         it('should update a task', async () => {
           const taskId = '123';
           const updatedFields: UpdateTaskDto = {};
-          const updateResult: UpdateResult = {
-              raw: undefined,
-              generatedMaps: []
+          const updateResult: Task = {
+              id: "",
+              title: "",
+              description: "",
+              status: TaskStatus.PENDING,
+              creationDate: undefined
           };
       
-          jest.spyOn(tasksService, 'updateTasks').mockResolvedValue(updateResult);
+          jest.spyOn(tasksService, 'updateTasks').mockResolvedValue(new PromiseupdateResult);
       
           expect(await tasksController.updateTask(taskId, updatedFields)).toBe(updateResult);
         });
