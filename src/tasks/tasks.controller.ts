@@ -9,7 +9,7 @@ export class TasksController {
     constructor(private tasksService: TasksService) { }
 
     @Get()
-    async getAllTasks(){
+    async getAllTasks() {
         return await this.tasksService.getAllTasks()
     }
 

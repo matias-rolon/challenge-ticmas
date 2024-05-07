@@ -44,7 +44,6 @@ export class TasksService {
         return daysPassed;
     }
 
-
     public async createTasks(title: string, description: string): Promise<Task> {
         return await this.taskRepository.createTasks(title, description);
     }

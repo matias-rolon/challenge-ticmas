@@ -9,7 +9,7 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 describe('TaskController tests', () => {
     let tasksController: TasksController;
     let tasksService: TasksService;
-  let repositoryMock: Partial<ItaskRepository>;
+    let repositoryMock: Partial<ItaskRepository>;
 
 
     beforeEach(async () => {
@@ -18,7 +18,7 @@ describe('TaskController tests', () => {
             providers: [
                 TasksService,
                 { provide: 'repository', useValue: repositoryMock },
-              ],
+            ],
         }).compile();
 
         tasksService = moduleRef.get<TasksService>(TasksService);
@@ -94,13 +94,13 @@ describe('TaskController tests', () => {
     });
 
     describe('deleteTask', () => {
-    it('should delete a task', async () => {
-        const taskId = '1';
-        jest.spyOn(tasksService, 'deleteTasks').mockResolvedValue(undefined);
-        const result = await tasksController.deleteTask(taskId);
-        expect(result).toBeUndefined();
-    });    
-});
+        it('should delete a task', async () => {
+            const taskId = '1';
+            jest.spyOn(tasksService, 'deleteTasks').mockResolvedValue(undefined);
+            const result = await tasksController.deleteTask(taskId);
+            expect(result).toBeUndefined();
+        });
+    });
 
 
     describe('updateTask', () => {

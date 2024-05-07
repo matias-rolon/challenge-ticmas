@@ -13,4 +13,4 @@ import { TasksTypeORM } from './task-typeorm.repository';
     useClass: TasksTypeORM
   }]
 })
-export class TasksModule {}
+export class TasksModule { }

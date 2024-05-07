@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { TaskStatus } from "../tasks/task.entity";
 
-@Entity({name: 'tasks'})
+@Entity({ name: 'tasks' })
 export class TaskBD {
 
     @PrimaryGeneratedColumn()
@@ -13,9 +13,9 @@ export class TaskBD {
     @Column()
     description: string
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     status: TaskStatus
 
-    @Column({nullable: true, default: () => 'CURRENT_TIMESTAMP'})
+    @Column({ nullable: true, default: () => 'CURRENT_TIMESTAMP' })
     creationDate: Date
 }
